@@ -1,0 +1,45 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pr="http://primefaces.org/rio">
+
+    <div class="Animated05" id="layout-menu-cover">
+        <ul class="layout-menu">
+            <li>
+                <a class="menulink ripplelink">
+                    <i class="icon-round58 Fs40"></i>
+                    <span class="Fs18">#{authenticationBean.loggedUser.username}<i class="icon-downwards Fright Fs20"></i><br /><span class="Fs12 FontRobotoLight">#{authenticationBean.loggedUser.name}</span></span>
+                </a>
+                <ul>
+                    <li><p:link style="color: #455a64 !important;" outcome="/views/users/userProfile" styleClass="menulink ripplelink"><i class="icon-user158 Fs16"></i> User Profile</p:link></li>
+                    <li><p:commandLink style="color: #455a64 !important;" action="#{authenticationBean.logout}" styleClass="menulink ripplelink"> <i class="icon-thermostat1 Fs16"></i> Logout</p:commandLink></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="Separator"></div>
+
+
+        <pr:menu>
+            <p:menuitem id="rm_home" value="Home" icon="fa fa-home" outcome="/views/home.xhtml"/>
+
+            <p:submenu id="rm_admin_sm" label="Administracion" icon="fa fa-gears">
+                <p:menuitem id="rm_configuraciones" value="Configuaciones" icon="fa fa-sliders" outcome="/views/configuraciones.xhtml"/>
+                <p:menuitem id="rm_users" value="Usuarios" icon="fa fa-users" outcome="/views/users/users.xhtml"/>
+            </p:submenu>
+
+            <p:submenu id="rm_tools_sm" label="Herramientas" icon="fa fa-wrench">
+                <p:menuitem id="rm_liteclient" value="Cliente Ligero" icon="fa fa-database" outcome="/views/liteclient.xhtml"/>
+            </p:submenu>
+
+            <p:separator />
+        </pr:menu>
+
+
+
+
+    </div>
+
+</ui:composition>

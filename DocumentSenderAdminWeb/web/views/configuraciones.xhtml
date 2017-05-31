@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template/template.xhtml">
+
+    <f:metadata>
+        <f:event type="preRenderView" listener="#{authenticationBean.checkForGroup('Superadmin')}" />
+    </f:metadata>
+
+
+    <ui:define name="breadcrumb">
+        <div class="Container100">
+            <div class="ContainerIndent" style="padding-bottom: 0px;">
+                <p:breadCrumb styleClass="Card ShadowEffect" >
+                    <p:menuitem value="Inicio" url="/views/home.xhtml" />
+                    <p:menuitem value="Configuraciones" url="#" />
+                </p:breadCrumb>
+            </div>
+        </div>
+    </ui:define>
+
+    <ui:define name="content">
+        <div class="Container100">
+            <div class="ContainerIndent">
+                <div class="Card ShadowEffect">
+                    <h:form id="form" prependId="false">
+
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes GreenButton" icon="ui-icon-check fa fa-check Fs14 white" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no RedButton" icon="ui-icon-close fa fa-close Fs14 white" />
+                        </p:confirmDialog>
+
+
+                        <h2>Configuraciones</h2>
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+
+                        <p:dataTable rows="50" paginator="true" id="configuraciones" var="config"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                                     rowsPerPageTemplate="10,20,50,100" paginatorPosition="bottom"
+                                     value="#{configuracionesBean.allConfiguraciones}"  >
+
+                            <f:facet name="{Exporters}">
+                                <p:commandButton
+                                        value="NuevaConfiguracion"
+                                        icon="ui-icon-plus"
+                                                 ajax="true"
+                                                 id="add-config"
+                                                 action="#{configuracionesBean.newConfiguration()}"
+                                                 update="edit-dialog" oncomplete="PF('edit-dialog-var').show()" title="Nueva configuracion" process="@this" />
+
+                            </f:facet>
+
+                            <p:column headerText="ID" width="30">
+                                <h:outputText value="#{config.id}" />
+                            </p:column>
+
+                            <p:column headerText="Llave" filterBy="#{config.llave}" sortBy="#{config.llave}" filterable="true" sortable="true">
+                                <h:outputText value="#{config.llave}" />
+                            </p:column>
+
+                            <p:column headerText="Valor" filterBy="#{config.valor}" sortBy="#{config.valor}" filterable="true" sortable="true">
+                                <h:outputText value="#{config.valor}" />
+                            </p:column>
+
+                            <p:column headerText="Descripcion" filterBy="#{config.Descripcion}" sortBy="#{config.Descripcion}" filterable="true" sortable="true">
+                                <h:outputText value="#{config.descripcion}" />
+                            </p:column>
+
+                            <p:column headerText="Acciones" width="70" exportable="false">
+                                <p:commandButton icon="ui-icon-edit"
+                                                 ajax="true"
+                                                 id="edit-config"
+                                                 action="#{configuracionesBean.edit(config)}"
+                                                 update="edit-dialog" oncomplete="PF('edit-dialog-var').show()" title="Editar" process="@this" />
+                                <p:tooltip id="tool1" for="edit-config" value="Editar" trackMouse="true" />
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:dialog id="edit-dialog" widgetVar="edit-dialog-var" header="#{configuracionesBean.selected.id != null?'Nueva Configuracion':'Editar Configuracion'}" width="800">
+
+                            <p:panelGrid columns="2" styleClass="Wid100">
+
+                                <p:outputLabel for="input-id" value="ID" rendered="#{configuracionesBean.selected.id != null}" />
+                                <p:outputLabel id="input-id"  value="#{configuracionesBean.selected.id}" styleClass="Wid90" rendered="#{configuracionesBean.selected.id != null}"  readonly="#{configuracionesBean.selected.id != null}"/>
+
+                                <p:outputLabel for="input-llave" value="Llave" />
+                                <p:inputText id="input-llave"  value="#{configuracionesBean.selected.llave}" styleClass="Wid90"/>
+
+                                <p:outputLabel for="input-valor" value="Valor" />
+                                <p:inputText id="input-valor"  value="#{configuracionesBean.selected.valor}" styleClass="Wid90"/>
+
+                                <p:outputLabel for="input-descripcion" value="Descripcion"/>
+                                <p:inputTextarea id="input-descripcion" value="#{configuracionesBean.selected.descripcion}" styleClass="Wid90"/>
+
+                            </p:panelGrid>
+
+                            <p:commandButton styleClass="ui-confirmdialog-no RedButton" icon="ui-icon-close fa fa-close Fs14 white" ajax="true" value="Cancelar" oncomplete="PF('edit-dialog-var').hide()" process="@this"  />
+                            <p:commandButton styleClass="ui-confirmdialog-yes GreenButton" icon="ui-icon-check fa fa-check Fs14 white" ajax="true" value="Guardar" oncomplete="PF('edit-dialog-var').hide()" action="#{configuracionesBean.save}" update="form" />
+
+                        </p:dialog>
+
+
+                    </h:form>
+
+                    <br/><br/>
+                </div>
+            </div>
+        </div>
+        
+    </ui:define>
+
+</ui:composition>
